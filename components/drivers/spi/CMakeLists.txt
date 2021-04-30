@@ -1,0 +1,36 @@
+include_directories(${CMAKE_CURRENT_SOURCE_DIR})
+
+list(APPEND DRIVER_SRCS spi_core.c spi_dev.c)
+
+## driver spi
+if (RT_USING_QSPI)
+	list(APPEND DRIVER_SRCS spi/qspi_core.c)
+endif ()
+if (RT_USING_SPI_WIFI)
+	list(APPEND DRIVER_SRCS spi/spi_wifi_rw009.c)
+endif ()
+if (RT_USING_ENC28J60)
+	list(APPEND DRIVER_SRCS spi/enc28j60.c)
+endif ()
+if (RT_USING_SPI_MSD)
+	list(APPEND DRIVER_SRCS spi/spi_msd.c)
+endif ()
+if (RT_USING_SFUD)
+	list(APPEND DRIVER_SRCS
+		spi/spi_flash_sfud.c
+		spi/sfud/src/sfud.c)
+	include_directories(spi/sfud/inc)
+	if (RT_SFUD_USING_SFDP)
+		list(APPEND DRIVER_SRCS spi/sfud/src/sfud_sfdp.c)
+	endif ()
+
+	if (CROSS_TOOL STREQUAL gcc)
+		set(CMAKE_CXX_FLAGS ${CMAKE_CXX_FLAGS} -std99)
+	elseif (CROSS_TOOL STREQUAL keil)
+		if (PLATFORM STREQUAL armcc)
+			set(CMAKE_CXX_FLAGS --c99)
+		elseif (PLATFORM STREQUAL armclang)
+			set(CMAKE_CXX_FLAGS -std=c99)
+		endif ()
+	endif ()
+endif ()

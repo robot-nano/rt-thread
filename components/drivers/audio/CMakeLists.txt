@@ -1,0 +1,3 @@
+include_directories(${CMAKE_CURRENT_SOURCE_DIR})
+file(GLOB AUDIO_SRC *c)
+list(APPEND DRIVERS_SRCS ${AUDIO_SRC})

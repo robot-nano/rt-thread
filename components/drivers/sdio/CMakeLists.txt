@@ -1,0 +1,4 @@
+include_directories(${CMAKE_CURRENT_SOURCE_DIR})
+
+file(GLOB SDIO_SRCS *.c)
+list(APPEND DRIVER_SRCS ${SDIO_SRCS})
